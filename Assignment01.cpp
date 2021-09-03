@@ -22,9 +22,15 @@ int main(int argc, char * argv[])
     int val;
     
     list1.tailInsert(1);
-    //list1.tailInsert(2);
-    //list1.tailInsert(3);
+    list1.tailInsert(2);
+    list1.tailInsert(3);
     list1.tailInsert(4);
+    list1.tailInsert(5);
+    list1.tailInsert(6);
+    list1.tailInsert(7);
+    list1.tailInsert(8);
+    list1.tailInsert(9);
+    list1.tailInsert(10);
 
     LL<int>::iterator i;
 
@@ -37,11 +43,20 @@ int main(int argc, char * argv[])
     LL<int>::iterator it2;
 
     it1 = list1.begin();
-    //it1++;
-    LL<int>::iterator testit1;
+    it1++;
+    it1++;
+    it1++;
+    it1++;
+    it1++;
+    cout << "testing OG it1... " << *it1 << endl;
 
+    //testing when they are adjacent DONT FORGET TO CHANGE
     it2 = list1.end();
-    //it2--;
+    it2--;
+    it2--;
+    //it2++;
+    //it2++;
+    cout << "testing OG it2... " << *it2 << endl;
 
     list1.swapNodes(it1, it2);
 
