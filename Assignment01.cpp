@@ -79,11 +79,20 @@ int main(int argc, char * argv[])
         }
         else
         {
-            list1.swapNodes(maxPos, j);
-            LL<int>::iterator temp;
-            temp = maxPos;
-            j = maxPos;
-            maxPos = j;
+            if(*j < *maxPos)
+            {
+                list1.swapNodes(maxPos, j);
+                LL<int>::iterator temp;
+                temp = maxPos;
+                j = maxPos;
+                maxPos = j;
+            }
+            //list1.swapNodes(maxPos, j);
+            else
+            {
+
+            }
+            
         }
         i = list1.begin();
     }
