@@ -389,8 +389,11 @@ void LL<type>::swapNodes(iterator& it1, iterator& it2)
 
         //iter2_left -> prev = iter2;
         //iter1_next -> next = iter1;
-
-        if((it1.current) -> prev == NULL && (it1.current) -> next == it2.current)  //case where it1 is the head and the swapping node is adjacent to it
+        if(it1.current == it2.current)
+        {
+            return;
+        }
+        else if((it1.current) -> prev == NULL && (it1.current) -> next == it2.current)  //case where it1 is the head and the swapping node is adjacent to it
         {
             //cout << "We are in the correct case" << endl;
 
