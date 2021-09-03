@@ -13,7 +13,7 @@ int main(int argc, char * argv[])
 
     LL<int>::iterator it;
 
-    LL<int>::iterator end(NULL);
+    LL<int>::iterator nil(NULL);
 
     ifstream inFile;
 
@@ -21,6 +21,87 @@ int main(int argc, char * argv[])
 
     int val;
     
+    if(!inFile)
+    {
+        cout << "Error opening file" << endl;
+        return 0;
+    }
+
+    while(inFile >> val)
+    {
+        list1.tailInsert(val);
+    }
+
+    for(it = list1.begin(); it != NULL; it++)
+    {
+        cout << *it << endl;
+    }
+    cout << "Now begin the sort" << endl;
+
+    //time to start the selection sort....
+    LL<int>::iterator i, j;
+    LL<int>::iterator maxPos;
+    int max;
+
+    j = nil;
+
+    for(i = list1.begin(); i != j; j--)     //we are going to set j to a new node
+    {
+        max = *i;
+        maxPos = i;
+        i++;
+        cout << "this is j" << *j << endl;
+        while(i != j)
+        {
+            if(max < *i)
+            {
+                max = *i;
+                maxPos = i;//update the max and maxPos, maxPos poits ot nod ewith the biggest value
+            }
+            i++;    //once i = j, we found the max element
+            if(i == j)
+            {
+                if(*j < *i)
+                {
+                    max = *j;
+                    maxPos = j;
+                }
+            }
+        }
+        //since j might be the last max element
+
+        //j MIGHT contain the max element if it is not the end of the list.
+        if(j == nil)
+        {
+            j = list1.end();    //now that j is the rightmost element (the first loop its going to be nil); swap that with the maxPos.
+            list1.swapNodes(maxPos, j);
+            j = list1.end();
+        }
+        else
+        {
+            list1.swapNodes(maxPos, j);
+            LL<int>::iterator temp;
+            temp = maxPos;
+            j = maxPos;
+            maxPos = j;
+        }
+        i = list1.begin();
+    }
+    
+    i = list1.begin();
+    j = list1.begin();
+    j++;
+    if(*i > *j)
+    {
+        list1.swapNodes(i, j);
+    }
+
+    for(it = list1.begin(); it != NULL; it++)
+    {
+        cout << *it << endl;
+    }
+
+    /*
     list1.tailInsert(1);
     list1.tailInsert(2);
     list1.tailInsert(3);
@@ -82,6 +163,11 @@ int main(int argc, char * argv[])
     looping--;
     looping--;
     cout << *looping << endl;
+*/
+
+
+
+
 
     return 1;
 }
