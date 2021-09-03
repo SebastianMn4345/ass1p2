@@ -346,12 +346,13 @@ void LL<type>::swapNodes(iterator& it1, iterator& it2)
     node * iter2_left = iter2 -> prev;
     node * iter2_next = iter2 -> next;
     
-    if((iter1_left == NULL) && (iter2_next == NULL) && (iter1_next != iter2))
+    if((iter1_left == NULL) && (iter2_next == NULL) && (iter1_next != iter2))//swapping head and tail
     {
         cout << "inside this case 1" << endl;
         node * temp;
-        temp = iter1_next;
+        //temp = iter1_next;
         //cout << "inside swap nodes" << " testing iter1next " << iter1_next -> data << endl;
+        temp = iter1_next;
         iter1_next = iter2_next;
         iter2_next = temp;
         //iter2_prev -> next needs to point to iter2
@@ -373,19 +374,58 @@ void LL<type>::swapNodes(iterator& it1, iterator& it2)
         tail -> next = NULL;
         //=========================
     }  
-    else if((iter1_next == iter2) && (iter2_left == iter1))
+    else if((iter1_next == iter2) && (iter2_left == iter1)) //general adjacent case
     {
         cout << "inside this case 2" << endl;
-        node * temp;
+        node * temp1;
+        node * temp2;
+        /*
+        temp1 = iter2_next;
+        temp2 = iter1_left;
 
-        iter2_next = iter1;
-        iter1_left = iter2;
+        iter2 -> next = iter1;
+        iter1 -> prev = iter2;
+        */ //this was commented out and added to every case so that the iter1 = head and then adjacent case can work 
 
         //iter2_left -> prev = iter2;
         //iter1_next -> next = iter1;
 
-        if(iter2_next -> prev == NULL && iter1_left -> next == NULL)
+        if((it1.current) -> prev == NULL && (it1.current) -> next == it2.current)  //case where it1 is the head and the swapping node is adjacent to it
         {
+            //cout << "We are in the correct case" << endl;
+
+            temp1 = iter2_next;
+            iter1 -> next = temp1;
+            temp1 -> prev = iter1;
+
+            iter2 -> prev = NULL;
+            head = iter2;
+            head -> next = iter1;
+            iter1 -> prev = head;
+        }
+        else if((it2.current) -> next == NULL && (it2.current) -> prev == it1.current)   //case where we are swapping the end with something adjacent to it
+        {
+            cout << "we are in the correct case" << endl;
+            temp2 = iter1_left;
+            iter2 -> prev = temp2;
+            temp2 -> next = iter2;
+
+            iter2 -> next = iter1;
+            iter1 -> prev = iter2;
+            iter1 -> next = NULL;
+            tail = iter1;
+            tail -> prev = iter2;
+            iter2 -> next = tail;
+        }
+        else if(iter2_next -> prev == NULL && iter1_left -> next == NULL)//if they are ajacent and both are head and tail (rare)
+        {
+            cout << "we are in this inside case 1" << endl;
+            temp1 = iter2_next;
+            temp2 = iter1_left;
+
+            iter2 -> next = iter1;
+            iter1 -> prev = iter2;
+
             iter1_next = NULL;
             iter2_left = NULL;
 
@@ -396,18 +436,104 @@ void LL<type>::swapNodes(iterator& it1, iterator& it2)
             tail -> prev = head;
             head -> next = tail;
         }
-        else if(iter2_next != NULL)
+        else if(iter2_next -> prev != NULL && iter1_left -> next != NULL) //if they are adjacent and not head nor tail
         {
+            cout << "we are in this inside case 2" << endl;
+            temp1 = iter2_next;
+            temp2 = iter1_left;
+
+            iter2 -> next = iter1;
+            iter1 -> prev = iter2;
+            //cout << "we are in the correct case" << endl;
+            // 1 2 3 4
+            // 1 3 2 4 
             
+            iter1 -> next = temp1;  //!!!!!!!!iter1 -> next
+            temp1 -> prev = iter1;
+
+            iter2 -> prev = temp2;
+            iter2_left = temp2;
+            temp2 -> next = iter2;
+            cout << (iter1 -> prev) -> data << endl;
+        }
+        //old case with adjacent and head goes here
+    }
+    else if((it1.current) -> next != it2.current || (it2.current) -> prev != it1.current)//this is the any point in the list that is NOT adjacent
+    {
+        cout << "inside this case 3" << endl;
+        node * temp1;
+        node * temp2;
 
 
+        if((it1.current) -> prev == NULL)//first case, if it1 is the head, and it2 is somewhere else in the list
+        {
+            temp1 = iter2 -> next;
+            temp2 = iter1 -> next;
+
+            iter1 -> next = temp1;
+            temp1 -> prev = iter1;
+
+            iter2 -> next = temp2;
+            temp2 -> prev = iter2;
+
+            temp1 = iter1 -> prev;
+            temp2 = iter2 -> prev;
+
+            iter2 -> prev = NULL;
+            iter1 -> prev = temp2;
+
+            temp2 -> next = iter1;
+
+            head = iter2;
+            head -> next = iter2 -> next;
+        }
+        else if((it2.current) -> next == NULL)//second case, if it2 is the tail, and it1 is elsewhere on the list
+        {
+            temp1 = iter1 -> prev;
+            temp2 = iter2 -> prev;
+
+            iter2 -> prev = temp1;
+            temp1 -> next = iter2;
+
+            iter1 -> prev = temp2;
+            temp2 -> next = iter1;
+
+            temp1 = iter1 -> next;
+            temp2 = iter2 -> next;
+
+            iter2 -> next = temp1; 
+            temp1 -> prev = iter2;
+
+            iter1 -> next = NULL;
+
+            tail = iter1;
+            tail -> prev = iter1 -> prev;
 
         }
+        else    //this should encapsulate the case where it1 and it2 are both in random places in the list, not adjacent, nor is either of them head/tail
+        {
+            temp1 = iter1 -> next;
+            temp2 = iter2 -> next;
+
+            iter2 -> next = temp1;
+            temp1 -> prev = iter2;
+
+            iter1 -> next = temp2;
+            temp2 -> prev = iter1;
+
+            temp1 = iter1 -> prev;
+            temp2 = iter2 -> prev;
+
+            iter1 -> prev = temp2;
+            temp2 -> next = iter1;
+
+            iter2 -> prev = temp1;
+            temp1 -> next = iter2;
+        }
+
+
     }
-   
     
-
-
 
     return;
 }
